@@ -62,21 +62,24 @@
         </style>
     </head>
     <body>
-        <section id="audio">
-            <input id="audio-file" type="file" accept="audio/*" autofocus>
-            <audio id="audio-player" controls></audio>
-            <div id="ancillary-controls">
-                <span>
-                    <button id="rewind" class="player-control" title="Rewind 2 seconds. Shortcut: Numpad 4"><i class="fa fa-backward"></i></button>
-                    <button id="forward" class="player-control" title="Forward 2 seconds. Shortcut: Numpad 6"><i class="fa fa-forward"></i></button>
-                </span>
-                <span>
-                    speed: ×<label id="playback-rate">1.00</label>
-                    <button id="speed-up" class="player-control" title="Increase playback speed by 5%. Shortcut: Numpad 8"><i class="fa fa-angle-double-up"></i></button>
-                    <button id="slow-down" class="player-control" title="Decrease playback speed by 5%. Shortcut: Numpad 2"><i class="fa fa-angle-double-down"></i></button>
-                </span>
-            </div>
-        </section>
+        <div style="display: flex; justify-content: space-between;">
+            <section id="audio">
+                <input id="audio-file" type="file" accept="audio/*" autofocus>
+                <audio id="audio-player" controls></audio>
+                <div id="ancillary-controls">
+                    <span>
+                        <button id="rewind" class="player-control" title="Rewind 2 seconds. Shortcut: Numpad 4"><i class="fa fa-backward"></i></button>
+                        <button id="forward" class="player-control" title="Forward 2 seconds. Shortcut: Numpad 6"><i class="fa fa-forward"></i></button>
+                    </span>
+                    <span>
+                        speed: ×<label id="playback-rate">1.00</label>
+                        <button id="speed-up" class="player-control" title="Increase playback speed by 5%. Shortcut: Numpad 8"><i class="fa fa-angle-double-up"></i></button>
+                        <button id="slow-down" class="player-control" title="Decrease playback speed by 5%. Shortcut: Numpad 2"><i class="fa fa-angle-double-down"></i></button>
+                    </span>
+                </div>
+            </section>
+            <a href="https://github.com/siliconbrain/transcriber"><i class="fa fa-github" style="font-size: 32px"></i></a>
+        </div>
         <section id="text">
             <textarea></textarea>
         </section>
