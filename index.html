@@ -26,10 +26,17 @@
             #audio {
                 align-items: center;
                 display: flex;
+                flex-grow: 1;
                 margin-bottom: 1em;
+                margin-right: 64px;
+            }
+
+            #audio-file {
+                max-width: 300px;
             }
 
             #audio-player {
+                flex-grow: 1;
                 margin: 0 10px;
             }
             
@@ -55,9 +62,9 @@
                 border: none;
                 cursor: pointer;
                 display: inline-flex;
-                height: 20px;
+                font-size: 18px;
                 justify-content: center;
-                width: 20px;
+                padding: 4px;
             }
         </style>
     </head>
@@ -78,7 +85,7 @@
                     </span>
                 </div>
             </section>
-            <a href="https://github.com/siliconbrain/transcriber" title="View source on GitHub"><i class="fa fa-github" style="font-size: 32px"></i></a>
+            <a href="https://github.com/siliconbrain/transcriber" title="View source on GitHub" style="color: inherit;"><i class="fa fa-github" style="font-size: 32px"></i></a>
         </div>
         <section id="text">
             <textarea></textarea>
