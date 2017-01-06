@@ -4,8 +4,12 @@
         <meta charset="utf-8">
         <title>Transcriber</title>
         <style>
+            @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css);
+
             body {
+                background-color: #eee8d5;
                 box-sizing: border-box;
+                color: #002b36;
                 display: flex;
                 flex-direction: column;
                 font-family: sans-serif;
@@ -26,25 +30,47 @@
             
             #text {
                 display: flex;
+                flex-direction: column;
                 flex-grow: 1;
             }
 
             #text textarea {
                 align-items: stretch;
+                background-color: #fdf6e3;
+                color: inherit;
+                flex-grow: 1;
                 font-family: serif;
                 font-size: 12pt;
-                width: 90%;
+                resize: none;
+            }
+
+            .player-control {
+                align-items: center;
+                background: none;
+                border: none;
+                cursor: pointer;
+                display: inline-flex;
+                height: 20px;
+                justify-content: center;
+                width: 20px;
             }
         </style>
     </head>
     <body>
-        <section id="help">
-            
-        </section>
         <section id="audio">
             <input id="audio-file" type="file" accept="audio/*" autofocus>
             <audio id="audio-player" controls></audio>
-            <div>×<span id="playback-rate">1.00</span></div>
+            <div id="ancillary-controls">
+                <span>
+                    <button id="rewind" class="player-control" title="Rewind 2 seconds. Shortcut: Numpad 4"><i class="fa fa-backward"></i></button>
+                    <button id="forward" class="player-control" title="Forward 2 seconds. Shortcut: Numpad 6"><i class="fa fa-forward"></i></button>
+                </span>
+                <span>
+                    speed: ×<label id="playback-rate">1.00</label>
+                    <button id="speed-up" class="player-control" title="Increase playback speed by 5%. Shortcut: Numpad 8"><i class="fa fa-angle-double-up"></i></button>
+                    <button id="slow-down" class="player-control" title="Decrease playback speed by 5%. Shortcut: Numpad 2"><i class="fa fa-angle-double-down"></i></button>
+                </span>
+            </div>
         </section>
         <section id="text">
             <textarea></textarea>
@@ -58,15 +84,28 @@
 
             function changePlaybackRate(value) {
                 player.playbackRate += value;
-                playbackRateIndicator.innerHTML = 'x' + player.playbackRate.toFixed(2);
+                playbackRateIndicator.innerHTML = player.playbackRate.toFixed(2);
+            }
+            function increasePlaybackSpeed() {
+                changePlaybackRate(+playbackRateIncrement);
+            }
+            function decreasePlaybackSpeed() {
+                changePlaybackRate(-playbackRateIncrement);
+            }
+
+            function jumpBackward() {
+                player.currentTime -= timeJumpIncrement;
+            }
+            function jumpForward() {
+                player.currentTime += timeJumpIncrement;
             }
 
             function onKeypress(e) {
                 switch (e.code) {
-                    case 'Numpad4': player.currentTime -= timeJumpIncrement; break;
-                    case 'Numpad6': player.currentTime += timeJumpIncrement; break;
-                    case 'Numpad2': changePlaybackRate(-playbackRateIncrement); break;
-                    case 'Numpad8': changePlaybackRate(+playbackRateIncrement); break;
+                    case 'Numpad4': jumpBackward(); break;
+                    case 'Numpad6': jumpForward(); break;
+                    case 'Numpad2': decreasePlaybackSpeed(); break;
+                    case 'Numpad8': increasePlaybackSpeed(); break;
                     case 'Numpad5': player.paused ? player.play() : player.pause(); break;
                     default: return;  // skip default prevention
                 } 
@@ -82,6 +121,10 @@
             player.addEventListener('volumechange', function(e) {
                 localStorage['audio-volume'] = e.target.volume;
             });
+            document.querySelector('#rewind').addEventListener('click', jumpBackward);
+            document.querySelector('#forward').addEventListener('click', jumpForward);
+            document.querySelector('#speed-up').addEventListener('click', increasePlaybackSpeed);
+            document.querySelector('#slow-down').addEventListener('click', decreasePlaybackSpeed);
 
             player.volume = localStorage['audio-volume'] || 1;
         </script>
