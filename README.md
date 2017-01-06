@@ -5,7 +5,7 @@ A simple tool for transcribing audio.
 ## Usage
 
 To start, select the file you'd like to transcribe.
-After the file is selected you can write your transcription into the text area, while controlling the audio with the numeric keypad.
+After the file is selected you can write your transcript into the text area, while controlling audio playback with the numeric keypad.
 
 ### Controls
 
