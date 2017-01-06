@@ -83,6 +83,9 @@
                         <button id="speed-up" class="player-control" title="Increase playback speed by 5%. Shortcut: Numpad 8"><i class="fa fa-angle-double-up"></i></button>
                         <button id="slow-down" class="player-control" title="Decrease playback speed by 5%. Shortcut: Numpad 2"><i class="fa fa-angle-double-down"></i></button>
                     </span>
+                    <span>
+                        <button id="timecode" class="player-control" title="Insert timecode. Shortcut: Numpad 0"><i class="fa fa-clock-o"></i></button>
+                    </span>
                 </div>
             </section>
             <a href="https://github.com/siliconbrain/transcriber" title="View source on GitHub" style="color: inherit;"><i class="fa fa-github" style="font-size: 32px"></i></a>
@@ -115,6 +118,28 @@
                 player.currentTime += timeJumpIncrement;
             }
 
+            function pad2(value) {
+                return ('00' + value).slice(-2);
+            }
+
+            function pad3(value) {
+                return ('000' + value).slice(-3);
+            }
+
+            function getTimecode() {
+                const totalSeconds = player.currentTime;
+                const totalHours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = Math.floor(totalSeconds % 60);
+                const milliseconds = Math.floor((totalSeconds % 1) * 1000);
+
+                return pad2(totalHours) + ':' + pad2(minutes) + ':' + pad2(seconds) + ',' + pad3(milliseconds);
+            }
+
+            function insertTimecode() {
+                textArea.value += '[' + getTimecode() + ']';
+            }
+
             function onKeypress(e) {
                 switch (e.code) {
                     case 'Numpad4': jumpBackward(); break;
@@ -122,6 +147,7 @@
                     case 'Numpad2': decreasePlaybackSpeed(); break;
                     case 'Numpad8': increasePlaybackSpeed(); break;
                     case 'Numpad5': player.paused ? player.play() : player.pause(); break;
+                    case 'Numpad0': insertTimecode(); break;
                     default: return;  // skip default prevention
                 } 
                 e.preventDefault();
@@ -140,6 +166,7 @@
             document.querySelector('#forward').addEventListener('click', jumpForward);
             document.querySelector('#speed-up').addEventListener('click', increasePlaybackSpeed);
             document.querySelector('#slow-down').addEventListener('click', decreasePlaybackSpeed);
+            document.querySelector('#timecode').addEventListener('click', insertTimecode);
 
             player.volume = localStorage['audio-volume'] || 1;
         </script>
