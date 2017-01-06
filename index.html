@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Transcriber</title>
+        <style>
+            body {
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                font-family: sans-serif;
+                height: 100vh;
+                margin: 0;
+                padding: 15px;
+            }
+
+            #audio {
+                align-items: center;
+                display: flex;
+                margin-bottom: 1em;
+            }
+
+            #audio-player {
+                margin: 0 10px;
+            }
+            
+            #text {
+                display: flex;
+                flex-grow: 1;
+            }
+
+            #text textarea {
+                align-items: stretch;
+                font-family: serif;
+                font-size: 12pt;
+                width: 90%;
+            }
+        </style>
+    </head>
+    <body>
+        <section id="help">
+            
+        </section>
+        <section id="audio">
+            <input id="audio-file" type="file" accept="audio/*" autofocus>
+            <audio id="audio-player" controls></audio>
+            <div>×<span id="playback-rate">1.00</span></div>
+        </section>
+        <section id="text">
+            <textarea></textarea>
+        </section>
+        <script>
+            var player = document.querySelector('#audio-player');
+            var playbackRateIndicator = document.querySelector('#playback-rate');
+            var playbackRateIncrement = 0.05;
+            var timeJumpIncrement = 2;
+            var textArea = document.querySelector('#text textarea');
+
+            function changePlaybackRate(value) {
+                player.playbackRate += value;
+                playbackRateIndicator.innerHTML = 'x' + player.playbackRate.toFixed(2);
+            }
+
+            function onKeypress(e) {
+                switch (e.code) {
+                    case 'Numpad4': player.currentTime -= timeJumpIncrement; break;
+                    case 'Numpad6': player.currentTime += timeJumpIncrement; break;
+                    case 'Numpad2': changePlaybackRate(-playbackRateIncrement); break;
+                    case 'Numpad8': changePlaybackRate(+playbackRateIncrement); break;
+                    case 'Numpad5': player.paused ? player.play() : player.pause(); break;
+                    default: return;  // skip default prevention
+                } 
+                e.preventDefault();
+            }
+
+            document.querySelector('#audio-file').onchange = function(e) {
+                player.src = URL.createObjectURL(e.target.files[0]);
+                textArea.focus();
+            };
+
+            document.addEventListener('keypress', onKeypress, true);
+            player.addEventListener('volumechange', function(e) {
+                localStorage['audio-volume'] = e.target.volume;
+            });
+
+            player.volume = localStorage['audio-volume'] || 1;
+        </script>
+    </body>
+</html>
